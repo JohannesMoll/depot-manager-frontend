@@ -1,5 +1,5 @@
 {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "prettier.tabWidth": 4,
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
