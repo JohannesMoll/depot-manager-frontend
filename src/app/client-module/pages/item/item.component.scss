@@ -1,0 +1,42 @@
+.form-compact {
+    .form-card-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+
+        @media (max-width: 1280px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (max-width: 1100px) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        nb-card {
+            height: 100%;
+        }
+    }
+
+    depot-form-element {
+        ::ng-deep input,
+        ::ng-deep textarea,
+        ::ng-deep select {
+            padding: 0.25rem 0.5rem;
+        }
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-top: 1.5rem;
+
+        .grow {
+            flex: 1 1 auto;
+        }
+
+        button[nbButton] {
+            margin-top: 1.5rem;
+        }
+    }
+}

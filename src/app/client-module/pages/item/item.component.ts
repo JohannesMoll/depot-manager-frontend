@@ -93,6 +93,7 @@ export class ItemComponent implements OnInit, OnDestroy {
         pictureId: new UntypedFormControl(null),
         groupId: new UntypedFormControl(null),
         tags: new UntypedFormControl([]),
+        internalNotes: new UntypedFormControl(''),
         changeComment: new UntypedFormControl(''),
     } as Record<keyof ReportItemInWrite, UntypedFormControl | UntypedFormArray>);
 
@@ -157,6 +158,8 @@ export class ItemComponent implements OnInit, OnDestroy {
                         groupId: null,
 
                         tags: [],
+
+                        internalNote: '',
 
                         changeComment: '',
 
@@ -297,7 +300,7 @@ export class ItemComponent implements OnInit, OnDestroy {
         this.form.updateValueAndValidity();
     }
 
-    onSubmit(dialogRef: NbDialogRef<any>) {
+    onSubmit(dialogRef?: NbDialogRef<any>) {
         console.log('Submit:', this.form.getRawValue());
         this.submitted = true;
         if (!this.form.valid) {

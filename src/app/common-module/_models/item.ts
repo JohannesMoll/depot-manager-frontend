@@ -44,6 +44,8 @@ export interface Item {
     bayId?: string;
 
     reservationId?: string;
+
+    internalNotes?: string;
 }
 
 export interface ItemInWrite {
@@ -74,6 +76,8 @@ export interface ItemInWrite {
     tags: string[];
 
     changeComment: string;
+
+    internalNotes?: string;
 }
 
 export interface ReportItemInWrite extends ItemInWrite {

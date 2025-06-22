@@ -6,120 +6,164 @@
             <nb-action icon="save" (click)="openConfirmDialog($event, submitDialog)"></nb-action>
         </nb-actions>
     </nb-card-header>
+
     <nb-card-body>
-        <form [formGroup]="form" (ngSubmit)="openConfirmDialog($event, submitDialog)">
-            <depot-form-element
-                [formControlRef]="form.controls.groupId"
-                [submitted]="submitted"
-                type="itemgroup"
-                title="Item Group"
-                (change)="openCopyFromItemDialog($event, copyFromItemDialog)"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.externalId"
-                [submitted]="submitted"
-                type="text"
-                title="External ID"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.manufacturer"
-                [submitted]="submitted"
-                type="text"
-                title="Manufacturer"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.model"
-                [submitted]="submitted"
-                type="text"
-                title="Model"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.serialNumber"
-                [submitted]="submitted"
-                type="text"
-                title="Serial Number"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.manufactureDate"
-                [submitted]="submitted"
-                type="date"
-                title="Date of manufacture"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.purchaseDate"
-                [submitted]="submitted"
-                type="date"
-                title="Purchase Date"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.firstUseDate"
-                [submitted]="submitted"
-                type="date"
-                title="First Use Date"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.name"
-                [submitted]="submitted"
-                type="text"
-                title="Name"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.description"
-                [submitted]="submitted"
-                type="textarea"
-                title="Description"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.reportProfileId"
-                [submitted]="submitted"
-                type="reportProfile"
-                title="Report Profile"
-            ></depot-form-element>
-            <depot-form-element
-                *ngIf="!createReport"
-                [formControlRef]="form.controls.condition"
-                [submitted]="submitted"
-                type="select"
-                [choices]="conditionChoices"
-                title="Condition"
-            ></depot-form-element>
-            <depot-form-element
-                *ngIf="!createReport"
-                [formControlRef]="form.controls.conditionComment"
-                [submitted]="submitted"
-                type="text"
-                title="Condition Comment"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.pictureId"
-                [submitted]="submitted"
-                type="picture"
-                title="Picture"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.tags"
-                [submitted]="submitted"
-                type="tags"
-                title="Tags"
-            ></depot-form-element>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-compact">
+            <div class="form-card-grid">
+                <!-- Card 1: Internal Data -->
+                <nb-card size="small">
+                    <nb-card-header>Interne Angaben</nb-card-header>
+                    <nb-card-body>
+                        <depot-form-element
+                            [formControlRef]="form.controls.externalId"
+                            [submitted]="submitted"
+                            type="text"
+                            title="Depot ID"
+                        />
+
+                        <depot-form-element
+                            [formControlRef]="form.controls.groupId"
+                            [submitted]="submitted"
+                            type="itemgroup"
+                            title="Ausrüstungs Gruppe"
+                            (change)="openCopyFromItemDialog($event, copyFromItemDialog)"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.name"
+                            [submitted]="submitted"
+                            type="text"
+                            title="Name"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.description"
+                            [submitted]="submitted"
+                            type="text"
+                            title="Beschreibung"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.tags"
+                            [submitted]="submitted"
+                            type="tags"
+                            title="Tags"
+                        />
+                    </nb-card-body>
+                </nb-card>
+
+                <!-- Card 2: Model Info -->
+                <nb-card size="small">
+                    <nb-card-header>Modell Angaben</nb-card-header>
+                    <nb-card-body>
+                        <depot-form-element
+                            [formControlRef]="form.controls.manufacturer"
+                            [submitted]="submitted"
+                            type="text"
+                            title="Herrsteller"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.model"
+                            [submitted]="submitted"
+                            type="text"
+                            title="Modell"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.serialNumber"
+                            [submitted]="submitted"
+                            type="text"
+                            title="Seriennummer"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.pictureId"
+                            [submitted]="submitted"
+                            type="picture"
+                            title="Bild"
+                        />
+                    </nb-card-body>
+                </nb-card>
+
+                <!-- Card 3: Dates -->
+                <nb-card size="small">
+                    <nb-card-header>Datum</nb-card-header>
+                    <nb-card-body>
+                        <depot-form-element
+                            [formControlRef]="form.controls.manufactureDate"
+                            [submitted]="submitted"
+                            type="date"
+                            title="Herrstellungsdatum"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.purchaseDate"
+                            [submitted]="submitted"
+                            type="date"
+                            title="Kaufdatum"
+                        />
+                        <depot-form-element
+                            [formControlRef]="form.controls.firstUseDate"
+                            [submitted]="submitted"
+                            type="date"
+                            title="Erstinbetriebnahmedatum"
+                        />
+                    </nb-card-body>
+                </nb-card>
+
+                <!-- Card 4: Inspection report -->
+                <nb-card size="small">
+                    <nb-card-header>Prüfen</nb-card-header>
+                    <nb-card-body>
+                        <depot-form-element
+                            [formControlRef]="form.controls.reportProfileId"
+                            [submitted]="submitted"
+                            type="reportProfile"
+                            title="Prüfberichtsklasse"
+                        ></depot-form-element>
+                        <depot-form-element
+                            *ngIf="!createReport"
+                            [formControlRef]="form.controls.condition"
+                            [submitted]="submitted"
+                            type="select"
+                            [choices]="conditionChoices"
+                            title="Zustand"
+                        ></depot-form-element>
+                        <depot-form-element
+                            *ngIf="!createReport"
+                            [formControlRef]="form.controls.conditionComment"
+                            [submitted]="submitted"
+                            type="text"
+                            title="Bemerkung zum Zustand"
+                        ></depot-form-element>
+                        <button
+                            nbButton
+                            type="button"
+                            [disabled]="form.disabled"
+                            (click)="initReport()"
+                            *ngIf="!createReport"
+                        >
+                            <nb-icon icon="file-add-outline"></nb-icon> Prüfbericht erstellen
+                        </button>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+
+            <!-- Add an Inspection Report -->
             <div class="form-group" *ngIf="reportProfile$ | async">
-                <button
-                    nbButton
-                    type="button"
-                    [disabled]="form.disabled"
-                    (click)="initReport()"
-                    *ngIf="!createReport"
-                >
-                    <nb-icon icon="file-add-outline"></nb-icon> Create Inspection Report
-                </button>
                 <ng-container *ngIf="createReport">
-                    <h3>Inspection Report</h3>
+                    <h3>Prüfbericht</h3>
+                    <button
+                        nbButton
+                        type="button"
+                        size="small"
+                        [disabled]="form.disabled"
+                        (click)="uninitReport()"
+                        *ngIf="createReport"
+                    >
+                        <nb-icon icon="file-remove-outline"></nb-icon> Prüfbericht verwerfen
+                    </button>
                     <depot-form-element
                         [formControlRef]="form.controls.lastService"
                         [submitted]="submitted"
                         type="date"
-                        title="Service Date"
+                        title="Prüfdatum"
                     ></depot-form-element>
+
                     <nb-card *ngFor="let reportElementForm of reportForm.controls">
                         <nb-card-header>
                             {{ reportElementForm.reportElement.title }}
@@ -130,13 +174,13 @@
                                 [formControlRef]="reportElementForm.controls.state"
                                 [submitted]="submitted"
                                 type="reportState"
-                                title="Rating"
+                                title="Zustand"
                             ></depot-form-element>
                             <depot-form-element
                                 [formControlRef]="reportElementForm.controls.comment"
                                 [submitted]="submitted"
                                 type="textarea"
-                                title="Rating Comment"
+                                title="Bemerkung zum Zustand"
                             ></depot-form-element>
                         </nb-card-body>
                     </nb-card>
@@ -161,9 +205,28 @@
                     ></depot-form-element>
                 </ng-container>
             </div>
-            <div class="form-group">
+
+            <!-- Notes below -->
+            <!--
+                Backend API not yet ready, but will be implemented as soon as the api supports it
+                <depot-form-element
+                title="Interne Materialteam Notizen"
+                [formControlRef]="form.controls.internalNotes"
+                [submitted]="submitted"
+                type="textarea"
+            />-->
+
+            <!-- Commit message and submit button -->
+            <div class="form-actions">
+                <depot-form-element
+                    class="grow"
+                    [formControlRef]="form.controls.changeComment"
+                    type="text"
+                    title="Änderungsnachricht"
+                />
                 <button
                     nbButton
+                    size="small"
                     [disabled]="loading || !form.valid"
                     type="submit"
                     [class.btn-pulse]="submitted"
@@ -175,25 +238,27 @@
     </nb-card-body>
 </nb-card>
 
+<!-- Commit message modal (only used by the save button)  -->
 <ng-template #submitDialog let-ref="dialogRef">
     <form [formGroup]="form" (ngSubmit)="onSubmit(ref)">
         <nb-card>
-            <nb-card-header>Change Comment</nb-card-header>
+            <nb-card-header>Änderungsnachricht</nb-card-header>
             <nb-card-body class="no-padding">
                 <depot-form-element
                     [formControlRef]="form.controls.changeComment"
                     type="text"
-                    title="Submit Comment"
+                    title="Änderungsnachricht"
                 ></depot-form-element>
             </nb-card-body>
             <nb-card-footer>
-                <button nbButton type="button" (click)="ref.close()">Cancel</button>
-                <button nbButton type="submit">Submit</button>
+                <button nbButton type="button" (click)="ref.close()">Abbrechen</button>
+                <button nbButton type="submit">Bestätigen</button>
             </nb-card-footer>
         </nb-card>
     </form>
 </ng-template>
 
+<!-- Item history modal -->
 <ng-template #itemDialog let-data let-ref="dialogRef">
     <nb-card class="scrollable-container">
         <nb-card-header>Details of {{ data.name }}</nb-card-header>
@@ -206,6 +271,7 @@
     </nb-card>
 </ng-template>
 
+<!-- Copy group attributes modal (used after selecting a group in the depot-form-element of type itemgroup) -->
 <ng-template #copyFromItemDialog let-data let-ref="dialogRef">
     <nb-card class="scrollable-container">
         <nb-card-header>Copy all fields from {{ data.name }}?</nb-card-header>
