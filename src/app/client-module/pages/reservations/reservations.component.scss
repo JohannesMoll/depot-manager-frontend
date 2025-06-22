@@ -28,3 +28,22 @@ nb-list-item {
     width: 50em;
     display: inline-block;
 }
+
+::ng-deep .highlight-reservation {
+    background-color: var(--primary) !important;
+}
+
+::ng-deep .highlight-reservation:hover {
+    color: var(--secondary) !important;
+    background-color: var(--tertiary) !important;
+}
+
+
+::ng-deep .past-reservation {
+    color: var(--tertiary) !important;
+}
+
+
+::ng-deep .past-reservation:hover {
+    color: var(--primary) !important;
+}

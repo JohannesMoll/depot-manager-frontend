@@ -11,6 +11,8 @@
             *ngFor="let reservation of reservations$ | async"
             (click)="onClickReservation(reservation)"
             class="clickable-item"
+            [class.highlight-reservation]="currentReservationIds.includes(reservation.id)"
+            [class.past-reservation]="pastReservationIds.includes(reservation.id)"
         >
             <span>{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</span>
             <span class="description">{{ reservation.name }}</span>
