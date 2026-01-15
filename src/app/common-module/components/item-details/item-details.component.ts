@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
-import { Item, ItemState, Reservation, TotalReportState } from '../../_models';
+import { Component, OnInit, OnDestroy, OnChanges, input, signal, effect } from '@angular/core';
+import { Item, ItemState, Reservation } from '../../_models';
 import { ApiService } from '../../_services';
 import { toIsoDate } from '../../_helpers';
-import { BehaviorSubject, combineLatest, EMPTY, Observable, Subject } from 'rxjs';
-import { switchMap, shareReplay, takeUntil, debounceTime, tap, map } from 'rxjs/operators';
+import { NbDialogRef } from '@nebular/theme';
 
 interface FieldItem {
     key: string;
@@ -18,99 +17,65 @@ interface ItemStateWithArray extends ItemState {
     selector: 'depot-item-details',
     templateUrl: './item-details.component.html',
     styleUrls: ['./item-details.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
-    private readonly item$ = new BehaviorSubject<Item>(null);
-    private readonly reservationStart$ = new BehaviorSubject<string>(toIsoDate(new Date()));
-    private readonly reservationEnd$ = new BehaviorSubject<string>(toIsoDate(new Date(Date.now() + 60 * 60 * 24 * 1000)));
+    // Inputs
+    reservationStart = input<string>(toIsoDate(new Date()));
+    reservationEnd = input<string>(
+        toIsoDate(new Date(Date.now() + 60 * 60 * 24 * 1000))
+    );
+    dialog = input.required<NbDialogRef<any>>();
+    item = input.required<Item>();
 
-    @Input()
-    public set item(item: Item) {
-        this.item$.next(item);
-    }
-
-    public get item(): Item {
-        return this.item$.value;
-    }
-
-    @Input()
-    public set reservationStart(reservationStart: string) {
-        this.reservationStart$.next(reservationStart);
-    }
-
-    public get reservationStart(): string {
-        return this.reservationStart$.value;
-    }
-
-    @Input()
-    public set reservationEnd(reservationEnd: string) {
-        this.reservationEnd$.next(reservationEnd);
-    }
-
-    public get reservationEnd(): string {
-        return this.reservationEnd$.value;
-    }
-
-    itemHistoryWithState$: Observable<ItemStateWithArray[]>;
-    //reservations$: Observable<Reservation[]>;
-    destroyed$ = new Subject<void>();
+    // Internal Signals
+    page = signal(1);
+    pageSize = signal(10);
+    hasMorePages = signal(true);
+    
+    // Output Signals
+    reservations = signal<Reservation[]>([]);
+    itemHistoryWithState = signal<ItemStateWithArray[]>([]);
 
     constructor(private api: ApiService) {
-        this.itemHistoryWithState$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
-            debounceTime(200),
-            switchMap(([item, reservationStart, reservationEnd]) => {
-                if (item && reservationStart && reservationEnd) {
-                    return this.api.getItemHistory(item.id, {
-                        start: reservationStart + 'T00:00:00',
-                        end: reservationEnd + 'T23:59:59',
-                        limit: 10,
-                        limitBeforeStart: 10,
-                        limitAfterEnd: 0,
-                    });
-                }
-                return EMPTY;
-            }),
-            map((history) =>
-                history.map((entry) => ({
+        effect(() => {
+            const item = this.item();
+            const start = this.reservationStart();
+            const end = this.reservationEnd();
+
+            this.api.getItemHistory(item.id, {
+                start: start + 'T00:00:00',
+                end: end + 'T23:59:59',
+                limit: 10,
+                limitBeforeStart: 10,
+                limitAfterEnd: 0,
+            }).subscribe(history => {
+                const transformed = history.map(entry => ({
                     changesArray: Object.entries(entry.changes)
-                        .filter(([key, value]) => value != null)
+                        .filter(([_, value]) => value != null)
                         .map(([key, value]) => ({ key, value: value.next })),
                     ...entry,
-                }))
-            ),
-            shareReplay(1),
-            takeUntil(this.destroyed$)
-        );
+                }));
 
-        /*this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
-            debounceTime(200),
-            switchMap(([item, reservationStart, reservationEnd]) => {
-                if (item && reservationStart && reservationEnd) {
-                    return this.api.getReservations({
-                        includeInactive: true,
-                        start: reservationStart,
-                        end: reservationEnd,
-                        limitBeforeStart: 1,
-                        limitAfterEnd: 1,
-                        itemId: item.id,
-                    });
-                }
-                return EMPTY;
-            }),
-            shareReplay(1),
-            takeUntil(this.destroyed$)
-        );*/
+                this.itemHistoryWithState.set(transformed);
+            });
+        });
+
+        effect(() => {
+            const page = this.page();
+            const pageSize = this.pageSize();
+            const item = this.item();
+            this.api.getReservationHistory(item.id, page, pageSize)
+                .subscribe(new_page => {
+                    this.hasMorePages.set(new_page.length >= pageSize);
+                    this.reservations.update(old_data => [...old_data, ...new_page]);
+                });
+        })
     }
 
     ngOnInit() {}
 
-    ngOnDestroy(): void {
-        this.item$.complete();
-        this.reservationStart$.complete();
-        this.reservationEnd$.complete();
-        this.destroyed$.next();
-    }
+    ngOnDestroy(): void {}
 
     ngOnChanges(): void {}
 
@@ -120,5 +85,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     stateFields(state: ItemState): FieldItem[] {
         return Object.entries(state.changes).map(([key, value]) => ({ key, value }));
+    }
+
+    loadNextPage(): void {
+        this.page.update(page => page + 1);
     }
 }
