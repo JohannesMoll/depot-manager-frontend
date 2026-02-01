@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { shareReplay, switchMap } from 'rxjs/operators';
+import { shareReplay, switchMap, map } from 'rxjs/operators';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { Picture } from '../../_models';
 import { ApiService } from '../../_services';
@@ -23,6 +23,7 @@ export class PictureListComponent implements OnInit {
     ngOnInit() {
         this.pictures$ = this.reload$.pipe(
             switchMap(() => this.api.getPictures()),
+            map(pictures => pictures.reverse()),
             shareReplay(1)
         );
     }
