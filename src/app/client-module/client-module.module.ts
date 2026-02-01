@@ -67,6 +67,7 @@ import { ReportElementsComponent } from './pages/report-elements/report-elements
 import { ReportElementComponent } from './pages/report-element/report-element.component';
 import { ReportProfileComponent } from './pages/report-profile/report-profile.component';
 import { ReportProfilesComponent } from './pages/report-profiles/report-profiles.component';
+import { ReportViewComponent } from './pages/report-view/report-view.component';
 import { ReservationReturnComponent } from './pages/reservation-return/reservation-return.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { CustomReuseStrategy } from './reuse-route';
@@ -89,6 +90,7 @@ import { ItemDetailsPageComponent } from './pages/item-details/item-details-page
         ReportElementComponent,
         ReportProfileComponent,
         ReportProfilesComponent,
+        ReportViewComponent,
     ],
     exports: [PagesComponent],
     imports: [

@@ -13,6 +13,7 @@ import { ReportElementComponent } from './pages/report-element/report-element.co
 import { ReportElementsComponent } from './pages/report-elements/report-elements.component';
 import { ReportProfileComponent } from './pages/report-profile/report-profile.component';
 import { ReportProfilesComponent } from './pages/report-profiles/report-profiles.component';
+import { ReportViewComponent } from './pages/report-view/report-view.component';
 import { ReservationReturnComponent } from './pages/reservation-return/reservation-return.component';
 import { ReservationComponent } from './pages/reservation/reservation.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
@@ -112,6 +113,11 @@ const routes: Routes = [
                         component: ReportElementComponent,
                     },
                 ],
+            },
+            {
+                path: 'report/:itemId/:reportId',
+                component: ReportViewComponent,
+                canActivate: [AuthGuard],
             },
             {
                 path: 'logout',

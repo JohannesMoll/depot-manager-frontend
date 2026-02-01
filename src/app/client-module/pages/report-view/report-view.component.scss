@@ -1,0 +1,134 @@
+@use '../mixins';
+@include mixins.tight-layout;
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    h4 {
+        margin: 0;
+        flex: 1;
+    }
+
+    .back-button {
+        nb-icon {
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+.report-details {
+    .report-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--separator);
+
+        h5 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+        }
+
+        .timestamp {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    }
+
+    .report-elements {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .report-element-card {
+            nb-card {
+                margin-bottom: 0;
+
+                nb-card-header {
+                    h6 {
+                        margin: 0;
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                    }
+                }
+
+                nb-card-body {
+                    .report-description {
+                        margin-bottom: 1rem;
+
+                        strong {
+                            display: block;
+                            margin-bottom: 0.5rem;
+                        }
+
+                        ::ng-deep {
+                            p {
+                                margin: 0.25rem 0;
+                            }
+                        }
+                    }
+
+                    .report-rating {
+                        margin-bottom: 1rem;
+
+                        strong {
+                            display: block;
+                            margin-bottom: 0.5rem;
+                        }
+
+                        .status-badge {
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            padding: 0.5rem 1rem;
+                            border-radius: 0.25rem;
+                            font-weight: 500;
+
+                            nb-icon {
+                                font-size: 1.25rem;
+                            }
+
+                            &.status-success {
+                                background-color: var(--success-light);
+                                color: var(--success-dark);
+                            }
+
+                            &.status-warning {
+                                background-color: var(--warning-light);
+                                color: var(--warning-dark);
+                            }
+
+                            &.status-danger {
+                                background-color: var(--danger-light);
+                                color: var(--danger-dark);
+                            }
+
+                            &.status-basic {
+                                background-color: var(--basic-light);
+                                color: var(--basic-dark);
+                            }
+                        }
+                    }
+
+                    .report-comment {
+                        strong {
+                            display: block;
+                            margin-bottom: 0.5rem;
+                        }
+
+                        p {
+                            margin: 0;
+                            white-space: pre-wrap;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .no-report-elements {
+        text-align: center;
+        padding: 2rem;
+        opacity: 0.7;
+    }
+}

@@ -1,81 +1,37 @@
-.history-entry {
-    padding: 0.5rem 0;
-}
-
-.history-content {
+.report-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
     width: 100%;
-}
 
-.history-header {
-    margin-bottom: 0.5rem;
+    .report-data {
+        flex: 1;
+        min-width: 0;
 
-    strong {
-        font-size: 0.95rem;
-    }
+        .key {
+            font-weight: 600;
+        }
 
-    .timestamp {
-        font-size: 0.875rem;
-        opacity: 0.7;
-        margin-left: 0.25rem;
-    }
-}
-
-.key {
-    font-weight: 600;
-    opacity: 0.8;
-}
-
-.report-section {
-    margin-top: 0.75rem;
-}
-
-.report-item {
-    margin-bottom: 0.5rem;
-}
-
-.report-title {
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-}
-
-.report-description {
-    font-size: 0.875rem;
-    margin-bottom: 0.25rem;
-    opacity: 0.9;
-
-    ::ng-deep {
-        p {
-            margin: 0.25rem 0;
+        .report-count {
+            font-size: 0.875rem;
+            opacity: 0.7;
+            margin-top: 0.25rem;
         }
     }
+
+    .report-link {
+        flex-shrink: 0;
+        margin-left: auto;
+    }
 }
 
-.report-rating {
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-}
+.no-reports {
+    text-align: center;
+    padding: 1.5rem;
+    opacity: 0.7;
 
-.report-comment {
-    font-size: 0.875rem;
-    font-style: italic;
-    opacity: 0.8;
-    margin-top: 0.25rem;
-}
-
-.report-divider {
-    margin: 0.5rem 0;
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
-.status-success {
-    color: var(--color-success-700);
-}
-
-.status-warning {
-    color: var(--color-warning-700);
-}
-
-.status-danger {
-    color: var(--color-danger-700);
+    p {
+        margin: 0;
+    }
 }

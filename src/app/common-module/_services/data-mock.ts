@@ -2,6 +2,7 @@ import { User } from './auth.service';
 
 const User: User = {
     roles: ['admin', 'manager'],
+    // roles: [],
     teams: ['TEAM001'],
     zoneinfo: '',
     sub: '12345',
