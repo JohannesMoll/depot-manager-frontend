@@ -134,6 +134,7 @@ import { RouterLink } from '@angular/router';
         ReportElementPipe,
         ReportProfilePipe,
         ReservationNamePipe,
+        UserNamePipe,
         ItemNamePipe,
     ], imports: [CommonModule,
         BrowserAnimationsModule,

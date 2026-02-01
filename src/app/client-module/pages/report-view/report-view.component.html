@@ -1,4 +1,4 @@
-<nb-card *ngIf="report$ | async as report">
+<nb-card *ngIf="report$ | async as report" class="report-view-card">
     <nb-card-header>
         <div class="header-actions">
             <button nbButton status="basic" (click)="onBack()" class="back-button">
@@ -6,62 +6,81 @@
                 Back
             </button>
             <h4>Report Details</h4>
+            <button nbButton status="primary" (click)="exportAsPdf()" class="export-button">
+                <nb-icon icon="download-outline"></nb-icon>
+                Export PDF
+            </button>
         </div>
     </nb-card-header>
     <nb-card-body>
         <div class="report-details">
             <div class="report-header">
-                <h5>{{ report.comment }}</h5>
-                <span class="timestamp">{{ report.timestamp | formatDateTime }}</span>
+                <div class="header-main">
+                    <h3>{{ report.comment }}</h3>
+                </div>
+                <div class="header-meta">
+                    <div class="meta-item">
+                        <nb-icon icon="calendar-outline"></nb-icon>
+                        <span>{{ report.timestamp | formatDateTime }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <nb-icon icon="person-outline"></nb-icon>
+                        <span>{{ report.userId | userName | async }}</span>
+                    </div>
+                    <div class="meta-item" *ngIf="report.report && report.report.length > 0">
+                        <nb-icon icon="file-text-outline"></nb-icon>
+                        <span>{{ report.report.length }} element(s)</span>
+                    </div>
+                </div>
             </div>
 
             <ng-container *ngIf="report.report && report.report.length > 0">
                 <div class="report-elements">
                     <ng-container *ngFor="let reportItem of report.report; let isLast = last">
                         <ng-container *ngIf="reportItem.reportElementId | reportElement | async; let reportElementRef">
-                            <div class="report-element-card">
-                                <nb-card>
-                                    <nb-card-header>
-                                        <h6>{{ reportElementRef.title }}</h6>
-                                    </nb-card-header>
-                                    <nb-card-body>
-                                        <div class="report-description">
-                                            <strong>Description:</strong>
-                                            <markdown [data]="reportElementRef.description"></markdown>
-                                        </div>
-                                        <div class="report-rating">
-                                            <strong>Rating:</strong>
-                                            <ng-container [ngSwitch]="reportItem.state">
-                                                <span *ngSwitchCase="'good'" class="status-badge status-success">
-                                                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon> Good condition
-                                                </span>
-                                                <span *ngSwitchCase="'monitor'" class="status-badge status-warning">
-                                                    <nb-icon icon="search-outline"></nb-icon> To monitor
-                                                </span>
-                                                <span *ngSwitchCase="'repair'" class="status-badge status-warning">
-                                                    <nb-icon icon="scissors-outline"></nb-icon> To repair
-                                                </span>
-                                                <span *ngSwitchCase="'retire'" class="status-badge status-danger">
-                                                    <nb-icon icon="trash-2-outline"></nb-icon> Do not use, retire
-                                                </span>
-                                                <span *ngSwitchCase="'not-applicable'" class="status-badge status-basic">
-                                                    <nb-icon icon="slash-outline"></nb-icon> Not applicable
-                                                </span>
-                                            </ng-container>
-                                        </div>
-                                        <div class="report-comment" *ngIf="reportItem.comment">
-                                            <strong>Comment:</strong>
-                                            <p>{{ reportItem.comment }}</p>
-                                        </div>
-                                    </nb-card-body>
-                                </nb-card>
+                            <div class="report-element-item">
+                                <div class="element-header">
+                                    <h5>{{ reportElementRef.title }}</h5>
+                                </div>
+                                <div class="element-content">
+                                    <div class="report-description">
+                                        <strong>Description:</strong>
+                                        <markdown [data]="reportElementRef.description"></markdown>
+                                    </div>
+                                    <div class="report-rating">
+                                        <strong>Rating:</strong>
+                                        <ng-container [ngSwitch]="reportItem.state">
+                                            <span *ngSwitchCase="'good'" class="status-badge status-success">
+                                                <nb-icon icon="checkmark-circle-2-outline"></nb-icon> Good condition
+                                            </span>
+                                            <span *ngSwitchCase="'monitor'" class="status-badge status-warning">
+                                                <nb-icon icon="search-outline"></nb-icon> To monitor
+                                            </span>
+                                            <span *ngSwitchCase="'repair'" class="status-badge status-warning">
+                                                <nb-icon icon="scissors-outline"></nb-icon> To repair
+                                            </span>
+                                            <span *ngSwitchCase="'retire'" class="status-badge status-danger">
+                                                <nb-icon icon="trash-2-outline"></nb-icon> Do not use, retire
+                                            </span>
+                                            <span *ngSwitchCase="'not-applicable'" class="status-badge status-basic">
+                                                <nb-icon icon="slash-outline"></nb-icon> Not applicable
+                                            </span>
+                                        </ng-container>
+                                    </div>
+                                    <div class="report-comment" *ngIf="reportItem.comment">
+                                        <strong>Comment:</strong>
+                                        <p>{{ reportItem.comment }}</p>
+                                    </div>
+                                </div>
                             </div>
+                            <hr *ngIf="!isLast" class="element-divider" />
                         </ng-container>
                     </ng-container>
                 </div>
             </ng-container>
 
             <div *ngIf="!report.report || report.report.length === 0" class="no-report-elements">
+                <nb-icon icon="alert-circle-outline"></nb-icon>
                 <p>No report elements available.</p>
             </div>
         </div>
