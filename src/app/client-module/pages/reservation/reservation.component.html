@@ -12,63 +12,76 @@
     </nb-card-header>
     <nb-card-body>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <label [for]="codeEl" class="label">Reservation Code</label>
-            <nb-form-field>
-                <input type="text" nbInput [formControl]="code" #codeEl/>
-                <button type="button" nbSuffix nbButton ghost [cdkCopyToClipboard]="code.value">
-                    <nb-icon icon="clipboard"></nb-icon>
-                </button>
-            </nb-form-field>
-            <depot-form-element
-                [formControlRef]="form.controls.type"
-                [submitted]="submitted"
-                [choices]="reservationChoices"
-                (change)="onTypeChange($event)"
-                type="radio"
-                title="Type"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.name"
-                [submitted]="submitted"
-                type="text"
-                title="Name"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.start"
-                [formControlRefEnd]="form.controls.end"
-                [submitted]="submitted"
-                type="daterange"
-                title="Date Range"
-            ></depot-form-element>
-            <depot-form-element
-                *ngIf="(allUsers$ | async) == null"
-                [formControlRef]="userName"
-                [submitted]="submitted"
-                type="text"
-                title="User"
-            ></depot-form-element>
-            <depot-form-element
-                *ngIf="(allUsers$ | async) != null"
-                [formControlRef]="form.controls.userId"
-                [submitted]="submitted"
-                [choices]="allUsers$ | async"
-                type="select"
-                title="User"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.teamId"
-                [submitted]="submitted"
-                [choices]="teams$ | async"
-                type="select"
-                title="Team"
-            ></depot-form-element>
-            <depot-form-element
-                [formControlRef]="form.controls.contact"
-                [submitted]="submitted"
-                type="textarea"
-                title="Contact"
-            ></depot-form-element>
-            <div class="form-group">
+            <div class="form-grid">
+                <div class="form-column">
+                    <depot-form-element
+                        [formControlRef]="form.controls.name"
+                        [submitted]="submitted"
+                        type="text"
+                        title="Name"
+                    ></depot-form-element>
+
+                    <depot-form-element
+                        [formControlRef]="form.controls.type"
+                        [submitted]="submitted"
+                        [choices]="reservationChoices"
+                        (change)="onTypeChange($event)"
+                        type="select"
+                        title="Type"
+                    ></depot-form-element>
+
+                    <depot-form-element
+                        [formControlRef]="form.controls.start"
+                        [formControlRefEnd]="form.controls.end"
+                        [submitted]="submitted"
+                        type="daterange"
+                        title="Date Range"
+                    ></depot-form-element>
+                </div>
+
+                <div class="form-column">
+                    <depot-form-element
+                        *ngIf="(allUsers$ | async) == null"
+                        [formControlRef]="userName"
+                        [submitted]="submitted"
+                        type="text"
+                        title="User"
+                    ></depot-form-element>
+                    <depot-form-element
+                        *ngIf="(allUsers$ | async) != null"
+                        [formControlRef]="form.controls.userId"
+                        [submitted]="submitted"
+                        [choices]="allUsers$ | async"
+                        type="select"
+                        title="User"
+                    ></depot-form-element>
+
+                    <depot-form-element
+                        [formControlRef]="form.controls.teamId"
+                        [submitted]="submitted"
+                        [choices]="teams$ | async"
+                        type="select"
+                        title="Team"
+                    ></depot-form-element>
+
+                    <depot-form-element
+                        [formControlRef]="form.controls.contact"
+                        [submitted]="submitted"
+                        type="textarea"
+                        title="Contact"
+                    ></depot-form-element>
+                </div>
+            </div>
+
+            <div class="form-bottom-row">
+                <div class="reservation-code-display">
+                    <span class="code-label">Code:</span>
+                    <span class="code-value">{{ code.value || '—' }}</span>
+                    <button type="button" nbButton size="tiny" ghost [cdkCopyToClipboard]="code.value" *ngIf="code.value">
+                        <nb-icon icon="clipboard"></nb-icon>
+                    </button>
+                </div>
+
                 <button
                     nbButton
                     [disabled]="loading || !form.valid"

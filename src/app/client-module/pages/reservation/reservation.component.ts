@@ -18,10 +18,7 @@ import { parseHttpError } from 'src/app/common-module/_helpers';
 @Component({
     selector: 'depot-reservation',
     standalone: false,
-    styles: `
-        :host {
-            --card-margin-bottom: 0,
-        }`,
+    styleUrls: ['./reservation.component.scss'],
     templateUrl: './reservation.component.html'
 })
 export class ReservationComponent implements OnInit, OnDestroy {
@@ -41,7 +38,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
 
     readonly form: UntypedFormGroup = new UntypedFormGroup({
         name: new UntypedFormControl('', Validators.required),
-        type: new UntypedFormControl(null, Validators.required),
+        type: new UntypedFormControl(ReservationType.Private, Validators.required),
         start: new UntypedFormControl(null, Validators.required),
         end: new UntypedFormControl(null, Validators.required),
         userId: new UntypedFormControl(null),
