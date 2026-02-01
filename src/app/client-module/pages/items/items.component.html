@@ -17,7 +17,11 @@
         </nb-select>
         <nb-actions size="small" class="float-right">
             <nb-action icon="refresh" (click)="reload()"></nb-action>
-            <nb-action icon="file-add" (click)="onCreate()"></nb-action>
+            <nb-action>
+                <button nbButton size="small" status="primary" (click)="onCreate()">
+                    Ausrüstung hinzufügen
+                </button>
+            </nb-action>
         </nb-actions>
     </nb-card-header>
     <nb-card-body>

@@ -2,7 +2,11 @@
     <nb-card-header>
         <nb-actions class="float-right">
             <nb-action icon="refresh" (click)="updateService.updateReservations$.next()"/>
-            <nb-action icon="file-add" (click)="onCreate()"/>
+            <nb-action>
+                <button nbButton size="small" status="primary" (click)="onCreate()">
+                    Neue Reservierung
+                </button>
+            </nb-action>
         </nb-actions>
     </nb-card-header>
     <nb-list nbInfiniteList [threshold]="500" (bottomThreshold)="onLoadNext()" [listenWindowScroll]="true">
