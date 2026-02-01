@@ -130,15 +130,6 @@
                             type="text"
                             title="Bemerkung zum Zustand"
                         ></depot-form-element>
-                        <button
-                            nbButton
-                            type="button"
-                            [disabled]="form.disabled"
-                            (click)="initReport()"
-                            *ngIf="!createReport"
-                        >
-                            <nb-icon icon="file-add-outline"></nb-icon> Prüfbericht erstellen
-                        </button>
                     </nb-card-body>
                 </nb-card>
             </div>
