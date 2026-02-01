@@ -231,7 +231,8 @@
     <nb-card class="scrollable-container">
         <nb-card-header>History on {{ data.date | formatDate }} for {{ data.item.name }}</nb-card-header>
         <nb-card-body class="no-padding">
-            <depot-item-details-history [states]="data.states"></depot-item-details-history>
+            <depot-item-details-reports [states]="data.states"></depot-item-details-reports>
+            <depot-item-history [states]="data.states"></depot-item-history>
         </nb-card-body>
         <nb-card-footer>
             <button nbButton (click)="ref.close()">Close</button>

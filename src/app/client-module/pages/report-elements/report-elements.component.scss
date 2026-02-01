@@ -19,3 +19,32 @@ td > .table-fill {
     height: 100%;
     width: 100%;
 }
+.clickable-name {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.expanded-report-details {
+    margin: 1rem 0;
+
+    nb-card {
+        margin-bottom: 1rem;
+    }
+
+    nb-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h5 {
+            margin: 0;
+        }
+
+        .close-button {
+            margin-left: auto;
+        }
+    }
+}

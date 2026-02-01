@@ -6,10 +6,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { NbSortDirection, NbSortRequest, NbTreeGridDataSource, NbTreeGridDataSourceBuilder } from '@nebular/theme';
 
-interface ReportProfileWithOriginalOrderAndSteps extends ReportProfile {
+interface ReportProfileWithOriginalOrderAndSteps extends Omit<ReportProfile, 'elements'> {
     originalOrder: number;
-
     isElement: boolean;
+    elements?: ReportElement[];
 }
 
 interface ReportElementEntry extends ReportElement {
@@ -22,7 +22,7 @@ interface ReportElementEntry extends ReportElement {
 interface ReportProfileEntry {
     data: ReportProfileWithOriginalOrderAndSteps;
 
-    children: ReportElementEntry[];
+    children: { data: ReportElementEntry }[];
 }
 
 @Component({
@@ -43,6 +43,9 @@ export class ReportProfilesComponent implements OnInit, OnDestroy {
     sorting: NbSortRequest = { column: 'originalOrder', direction: NbSortDirection.ASCENDING };
 
     filter: string;
+
+    expandedReportId: string | null = null;
+    reportData: ReportProfileEntry[] = [];
 
     private destroyed$ = new Subject<void>();
 
@@ -74,6 +77,7 @@ export class ReportProfilesComponent implements OnInit, OnDestroy {
         );
 
         elements$.subscribe((entries) => {
+            this.reportData = entries;
             this.dataSource = this.dataSourceBuilder.create(entries);
             this.dataSource.filter(this.filter);
             this.dataSource.sort(this.sorting);
@@ -117,7 +121,27 @@ export class ReportProfilesComponent implements OnInit, OnDestroy {
                 relativeTo: this.activatedRoute.parent,
             });
         } else {
-            this.router.navigate([reportProfile.id], { relativeTo: this.activatedRoute.parent });
+            // Toggle expansion instead of navigating
+            this.toggleReportExpansion(reportProfile.id);
         }
+    }
+
+    toggleReportExpansion(reportId: string) {
+        if (this.expandedReportId === reportId) {
+            this.expandedReportId = null;
+        } else {
+            this.expandedReportId = reportId;
+        }
+        this.changeDetector.markForCheck();
+    }
+
+    isReportExpanded(reportId: string): boolean {
+        return this.expandedReportId === reportId;
+    }
+
+    onEditReport($event: MouseEvent, reportId: string) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        this.router.navigate([reportId], { relativeTo: this.activatedRoute.parent });
     }
 }

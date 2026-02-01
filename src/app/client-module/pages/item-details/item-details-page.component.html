@@ -102,10 +102,9 @@
                 <nb-card class="reports-card">
                     <nb-card-header>Reports</nb-card-header>
                     <nb-card-body class="scrollable">
-                        <depot-item-details-history
+                        <depot-item-details-reports
                             [states]="itemHistoryWithState"
-                            [onlyReports]="true"
-                        ></depot-item-details-history>
+                        ></depot-item-details-reports>
                     </nb-card-body>
                 </nb-card>
             </div>
@@ -143,10 +142,9 @@
                 <nb-card class="history-card">
                     <nb-card-header>History</nb-card-header>
                     <nb-card-body class="scrollable">
-                        <depot-item-details-history
+                        <depot-item-history
                             [states]="itemHistoryWithState"
-                            [noReports]="true"
-                        ></depot-item-details-history>
+                        ></depot-item-history>
                     </nb-card-body>
                 </nb-card>
             </div>

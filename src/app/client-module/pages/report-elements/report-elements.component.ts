@@ -33,6 +33,9 @@ export class ReportElementsComponent implements OnInit, OnDestroy {
 
     filter: string;
 
+    expandedReportId: string | null = null;
+    reportData: ReportElementEntry[] = [];
+
     private destroyed$ = new Subject<void>();
 
     constructor(
@@ -52,6 +55,7 @@ export class ReportElementsComponent implements OnInit, OnDestroy {
         );
 
         elements$.subscribe((entries) => {
+            this.reportData = entries;
             this.dataSource = this.dataSourceBuilder.create(entries);
             this.dataSource.filter(this.filter);
             this.dataSource.sort(this.sorting);
@@ -87,6 +91,26 @@ export class ReportElementsComponent implements OnInit, OnDestroy {
     onClickReportElement($event: MouseEvent, reportElement: ReportElement) {
         $event.stopPropagation();
         $event.preventDefault();
-        this.router.navigate([reportElement.id], { relativeTo: this.activatedRoute.parent });
+        // Toggle expansion instead of navigating
+        this.toggleReportExpansion(reportElement.id);
+    }
+
+    toggleReportExpansion(reportId: string) {
+        if (this.expandedReportId === reportId) {
+            this.expandedReportId = null;
+        } else {
+            this.expandedReportId = reportId;
+        }
+        this.changeDetector.markForCheck();
+    }
+
+    isReportExpanded(reportId: string): boolean {
+        return this.expandedReportId === reportId;
+    }
+
+    onEditReport($event: MouseEvent, reportId: string) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        this.router.navigate([reportId], { relativeTo: this.activatedRoute.parent });
     }
 }

@@ -77,7 +77,8 @@ import { UserNamePipe } from './_pipes/user-name.pipe';
 import { ReservationListItemComponent } from './components/reservation-list-item/reservation-list-item.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { ItemDetailsHistoryComponent } from './components/item-details-history/item-details-history.component';
+import { ItemDetailsReportsComponent } from './components/item-details-reports/item-details-reports.component';
+import { ItemHistoryComponent } from './components/item-history/item-history.component';
 import { RouterLink } from '@angular/router';
 
 @NgModule({
@@ -90,7 +91,8 @@ import { RouterLink } from '@angular/router';
         CalendarRangeDayCellComponent,
         CalendarRangeComponent,
         DateRangePickerComponent,
-        ItemDetailsHistoryComponent,
+        ItemDetailsReportsComponent,
+        ItemHistoryComponent,
         ItemFilterPipe,
         ItemGroupFilterPipe,
         FormatDatePipe,
@@ -125,7 +127,8 @@ import { RouterLink } from '@angular/router';
         FormatDateTimePipe,
         PictureListComponent,
         ItemDetailsComponent,
-        ItemDetailsHistoryComponent,
+        ItemDetailsReportsComponent,
+        ItemHistoryComponent,
         ItemGroupListComponent,
         ItemGroupNamePipe,
         ReportElementPipe,

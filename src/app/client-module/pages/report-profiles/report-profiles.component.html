@@ -49,7 +49,9 @@
                     <nb-icon *ngIf="row.children && row.expanded" icon="chevron-up-outline"></nb-icon>
                     <nb-icon *ngIf="row.children && !row.expanded" icon="chevron-down-outline"></nb-icon>
                     <span *ngIf="!row.children" class="indent">&nbsp; &nbsp;</span>
-                    {{ row.data.name }}
+                    <span class="clickable-name" (click)="!row.data.isElement && onClickReportProfile($event, row.data)">
+                        {{ row.data.name }}
+                    </span>
                 </td>
             </ng-container>
 
@@ -70,11 +72,66 @@
             <ng-container nbTreeGridColumnDef="action">
                 <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Action</th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    <button nbButton ghost (click)="onClickReportProfile($event, row.data)">
+                    <button
+                        *ngIf="!row.data.isElement"
+                        nbButton
+                        ghost
+                        status="info"
+                        (click)="onClickReportProfile($event, row.data)"
+                        nbTooltip="View Report"
+                    >
+                        <nb-icon [icon]="isReportExpanded(row.data.id) ? 'chevron-up' : 'chevron-down'"></nb-icon>
+                    </button>
+                    <button
+                        nbButton
+                        ghost
+                        (click)="row.data.isElement ? onClickReportProfile($event, row.data) : onEditReport($event, row.data.id)"
+                        nbTooltip="Edit"
+                    >
                         <nb-icon icon="edit"></nb-icon>
                     </button>
                 </td>
             </ng-container>
         </table>
+
+        <!-- Expanded Report Details -->
+        <ng-container *ngFor="let row of reportData">
+            <div *ngIf="!row.data.isElement && isReportExpanded(row.data.id)" class="expanded-report-details">
+                <nb-card accent="info">
+                    <nb-card-header>
+                        <h5>{{ row.data.name }}</h5>
+                        <button
+                            nbButton
+                            ghost
+                            size="small"
+                            class="close-button"
+                            (click)="toggleReportExpansion(row.data.id)"
+                        >
+                            <nb-icon icon="close-outline"></nb-icon>
+                        </button>
+                    </nb-card-header>
+                    <nb-card-body>
+                        <p><strong>Description:</strong> {{ row.data.description }}</p>
+
+                        <div *ngIf="row.children && row.children.length > 0" class="report-elements">
+                            <h6>Report Elements:</h6>
+                            <nb-accordion>
+                                <nb-accordion-item *ngFor="let child of row.children">
+                                    <nb-accordion-item-header>
+                                        {{ child.data.name }}
+                                    </nb-accordion-item-header>
+                                    <nb-accordion-item-body>
+                                        <p *ngIf="child.data.description">
+                                            <strong>Description:</strong> {{ child.data.description }}
+                                        </p>
+                                        <markdown *ngIf="child.data.description" [data]="child.data.description"></markdown>
+                                    </nb-accordion-item-body>
+                                </nb-accordion-item>
+                            </nb-accordion>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </ng-container>
     </nb-card-body>
 </nb-card>

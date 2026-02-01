@@ -12,15 +12,13 @@ interface ItemStateWithArray extends ItemState {
 }
 
 @Component({
-    selector: 'depot-item-details-history',
-    templateUrl: './item-details-history.component.html',
-    styleUrls: ['./item-details-history.component.scss'],
+    selector: 'depot-item-history',
+    templateUrl: './item-history.component.html',
+    styleUrls: ['./item-history.component.scss'],
     standalone: false
 })
-export class ItemDetailsHistoryComponent implements OnChanges {
+export class ItemHistoryComponent implements OnChanges {
     @Input() states: ItemStateWithArray[];
-    @Input() noReports = false;
-    @Input() onlyReports = false;
 
     displayStates: ItemStateWithArray[];
 
@@ -28,13 +26,7 @@ export class ItemDetailsHistoryComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.states) {
-            if (this.noReports) {
-                this.displayStates = this.states.filter((state) => state.comment && state.changesArray.length > 0);
-            } else if (this.onlyReports) {
-                this.displayStates = this.states.filter((state) => state.comment && state.report != null);
-            } else {
-                this.displayStates = this.states.filter((state) => state.comment);
-            }
+            this.displayStates = this.states.filter((state) => state.comment && state.changesArray.length > 0);
         }
     }
 

@@ -60,15 +60,13 @@
     <nb-accordion-item>
         <nb-accordion-item-header>Reports</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <depot-item-details-history [states]="itemHistoryWithState()"
-                [onlyReports]="true"></depot-item-details-history>
+            <depot-item-details-reports [states]="itemHistoryWithState()"></depot-item-details-reports>
         </nb-accordion-item-body>
     </nb-accordion-item>
     <nb-accordion-item>
         <nb-accordion-item-header>History</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <depot-item-details-history [states]="itemHistoryWithState()"
-                [noReports]="true"></depot-item-details-history>
+            <depot-item-history [states]="itemHistoryWithState()"></depot-item-history>
         </nb-accordion-item-body>
     </nb-accordion-item>
     <nb-accordion-item>
@@ -88,8 +86,8 @@
                             </div>
                         </div>
                         <div class="reservation-link">
-                            <a size="small" nbButton ghost 
-                                [routerLink]="['/', 'reservations', reservation.id]" 
+                            <a size="small" nbButton ghost
+                                [routerLink]="['/', 'reservations', reservation.id]"
                                 (click)="dialog().close()">View</a>
                         </div>
                     </div>

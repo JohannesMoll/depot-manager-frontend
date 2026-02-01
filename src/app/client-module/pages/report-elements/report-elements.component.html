@@ -41,7 +41,9 @@
                     Title
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.title }}
+                    <span class="clickable-name" (click)="onClickReportElement($event, row.data)">
+                        {{ row.data.title }}
+                    </span>
                 </td>
             </ng-container>
 
@@ -62,11 +64,49 @@
             <ng-container nbTreeGridColumnDef="action">
                 <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Action</th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    <button nbButton ghost (click)="onClickReportElement($event, row.data)">
+                    <button
+                        nbButton
+                        ghost
+                        status="info"
+                        (click)="onClickReportElement($event, row.data)"
+                        nbTooltip="View Report Element"
+                    >
+                        <nb-icon [icon]="isReportExpanded(row.data.id) ? 'chevron-up' : 'chevron-down'"></nb-icon>
+                    </button>
+                    <button
+                        nbButton
+                        ghost
+                        (click)="onEditReport($event, row.data.id)"
+                        nbTooltip="Edit"
+                    >
                         <nb-icon icon="edit"></nb-icon>
                     </button>
                 </td>
             </ng-container>
         </table>
+
+        <!-- Expanded Report Element Details -->
+        <ng-container *ngFor="let row of reportData">
+            <div *ngIf="isReportExpanded(row.data.id)" class="expanded-report-details">
+                <nb-card accent="info">
+                    <nb-card-header>
+                        <h5>{{ row.data.title }}</h5>
+                        <button
+                            nbButton
+                            ghost
+                            size="small"
+                            class="close-button"
+                            (click)="toggleReportExpansion(row.data.id)"
+                        >
+                            <nb-icon icon="close-outline"></nb-icon>
+                        </button>
+                    </nb-card-header>
+                    <nb-card-body>
+                        <p *ngIf="row.data.description"><strong>Description:</strong></p>
+                        <markdown *ngIf="row.data.description" [data]="row.data.description"></markdown>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </ng-container>
     </nb-card-body>
 </nb-card>

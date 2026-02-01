@@ -1,0 +1,92 @@
+<nb-list>
+    <nb-list-item *ngFor="let state of displayStates" class="history-entry">
+        <div class="history-content">
+            <div class="history-header">
+                <strong>{{ state.comment }}</strong> <span class="timestamp">{{ state.timestamp | formatDateTime }}</span>
+            </div>
+            <div class="changes-list" *ngIf="state.changesArray && state.changesArray.length > 0">
+                <ng-container *ngFor="let field of state.changesArray">
+                    <ng-container [ngSwitch]="field.key">
+                        <div *ngSwitchCase="'externalId'" class="change-item">
+                            <span class="key">External ID:</span> <span class="value">{{ field.value }}</span>
+                        </div>
+                        <div *ngSwitchCase="'manufacturer'" class="change-item">
+                            <span class="key">Manufacturer:</span> <span class="value">{{ field.value }}</span>
+                        </div>
+                        <div *ngSwitchCase="'model'" class="change-item">
+                            <span class="key">Model:</span> <span class="value">{{ field.value }}</span>
+                        </div>
+                        <div *ngSwitchCase="'serialNumber'" class="change-item">
+                            <span class="key">Serial Number:</span> <span class="value">{{ field.value }}</span>
+                        </div>
+                        <div *ngSwitchCase="'manufactureDate'" class="change-item">
+                            <span class="key">Manufacture Date:</span> <span class="value">{{ field.value | formatDate }}</span>
+                        </div>
+                        <div *ngSwitchCase="'purchaseDate'" class="change-item">
+                            <span class="key">Purchase Date:</span> <span class="value">{{ field.value | formatDate }}</span>
+                        </div>
+                        <div *ngSwitchCase="'firstUseDate'" class="change-item">
+                            <span class="key">First Use Date:</span> <span class="value">{{ field.value | formatDate }}</span>
+                        </div>
+                        <div *ngSwitchCase="'name'" class="change-item">
+                            <span class="key">Name:</span> <span class="value">{{ field.value.current }}</span>
+                        </div>
+                        <div *ngSwitchCase="'description'" class="change-item">
+                            <span class="key">Description:</span> <span class="value">{{ field.value }}</span>
+                        </div>
+                        <div *ngSwitchCase="'reportProfileId'" class="change-item">
+                            <span class="key">Report Profile:</span> <span class="value">{{ (field.value | reportProfile | async)?.name }}</span>
+                        </div>
+                        <div *ngSwitchCase="'totalReportState'" class="change-item">
+                            <span class="key">Total Report State:</span>
+                            <ng-container [ngSwitch]="field.value">
+                                <span *ngSwitchCase="'fit'" class="value status-success">
+                                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon> <b>Fit</b> to remain in service
+                                </span>
+                                <span *ngSwitchCase="'unfit'" class="value status-danger">
+                                    <nb-icon icon="close-circle-outline"></nb-icon> <b>Unfit</b> to remain in service
+                                </span>
+                            </ng-container>
+                        </div>
+                        <div *ngSwitchCase="'condition'" class="change-item">
+                            <span class="key">Condition:</span>
+                            <ng-container [ngSwitch]="field.value">
+                                <span *ngSwitchCase="'good'" class="value status-success">Good</span>
+                                <span *ngSwitchCase="'ok'" class="value status-success">Ok</span>
+                                <span *ngSwitchCase="'bad'" class="value status-warning">Bad</span>
+                                <span *ngSwitchCase="'gone'" class="value status-danger">Unavailable</span>
+                            </ng-container>
+                        </div>
+                        <div *ngSwitchCase="'conditionComment'" class="change-item">
+                            <span class="key">Condition Comment:</span> <span class="value">{{ field.value }}</span>
+                        </div>
+                        <div *ngSwitchCase="'lastService'" class="change-item">
+                            <span class="key">Last Service:</span> <span class="value">{{ field.value | formatDate }}</span>
+                        </div>
+                        <div *ngSwitchCase="'pictureId'" class="change-item picture-item">
+                            <span class="key">Picture:</span>
+                            <span class="value">updated</span>
+                        </div>
+                        <div *ngSwitchCase="'groupId'" class="change-item">
+                            <span class="key">Group:</span>
+                            <span class="value">{{ field.value | itemGroupName | async }}</span>
+                        </div>
+                        <div *ngSwitchCase="'tags'" class="change-item">
+                            <span class="key">Tags:</span>
+                            <span class="value"><span class="tag" *ngFor="let tag of field.value">{{ tag }}</span></span>
+                        </div>
+                        <div *ngSwitchCase="'reservationId'" class="change-item">
+                            <ng-container *ngIf="field.value == null; else noReservationId">
+                                <span class="key">Pick up by reservation:</span> <span class="value">{{ field.value | reservationName | async }}</span>
+                            </ng-container>
+                            <ng-template #noReservationId></ng-template>
+                        </div>
+                        <div *ngSwitchDefault class="change-item">
+                            <span class="key">{{ field.key }}:</span> <span class="value">{{ field.value }}</span>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </nb-list-item>
+</nb-list>
