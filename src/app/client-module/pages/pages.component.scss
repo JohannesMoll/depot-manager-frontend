@@ -32,3 +32,31 @@ nb-layout-footer {
         white-space: nowrap;
     }
 }
+
+// Mobile-specific styles
+@media (max-width: 768px) {
+    nb-sidebar {
+        // Ensure sidebar overlays content on mobile
+        ::ng-deep .main-container {
+            position: fixed;
+            z-index: 1050;
+        }
+
+        // Make menu items larger for easier touch targets
+        ::ng-deep nb-menu {
+            .menu-item {
+                a {
+                    padding: 1rem 1.25rem;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+    }
+
+    // Hide footer text on very small screens
+    @media (max-width: 480px) {
+        nb-layout-footer .footer {
+            font-size: 0.7rem;
+        }
+    }
+}

@@ -98,6 +98,9 @@ export class PagesComponent implements OnDestroy {
     destroyed$: Subject<void> = new Subject();
     loggedIn$: Observable<boolean>;
     name$: Observable<string>;
+    sidebarState: 'expanded' | 'collapsed' | 'compacted' = 'collapsed';
+    isMobile = false;
+    isLoggedIn = false;
 
     constructor(
         private authService: AuthService,
@@ -121,17 +124,55 @@ export class PagesComponent implements OnDestroy {
                     this.menuItems = this.menuItemsUser;
                 }
             });
+        // Check if mobile on init
+        this.checkMobile();
+
+        // Listen to window resize
+        window.addEventListener('resize', () => this.checkMobile());
+
         this.loggedIn$.pipe(takeUntil(this.destroyed$)).subscribe((loggedIn) => {
+            this.isLoggedIn = loggedIn;
             if (loggedIn) {
-                sidebarService.expand('left');
+                this.updateSidebarState();
             } else {
+                this.sidebarState = 'collapsed';
                 sidebarService.collapse('left');
+            }
+        });
+
+        // Auto-collapse sidebar on navigation for mobile
+        router.events.pipe(
+            filter(event => event instanceof NavigationEnd),
+            takeUntil(this.destroyed$)
+        ).subscribe(() => {
+            if (this.isMobile) {
+                sidebarService.collapse('left');
+                this.sidebarState = 'collapsed';
             }
         });
     }
 
     ngOnDestroy() {
         this.destroyed$.next();
+    }
+
+    private checkMobile() {
+        this.isMobile = window.innerWidth <= 768;
+        if (this.isLoggedIn) {
+            this.updateSidebarState();
+        }
+    }
+
+    private updateSidebarState() {
+        if (this.isMobile) {
+            // On mobile, start collapsed - user can toggle as needed
+            this.sidebarState = 'collapsed';
+            this.sidebarService.collapse('left');
+        } else {
+            // On desktop, expand sidebar
+            this.sidebarState = 'expanded';
+            this.sidebarService.expand('left');
+        }
     }
 
     logout() {

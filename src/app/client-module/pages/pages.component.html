@@ -24,7 +24,8 @@
         tag="left"
         [left]="true"
         [containerFixed]="true"
-        [state]="(loggedIn$ | async) ? 'expanded' : 'collapsed'"
+        [state]="sidebarState"
+        [responsive]="true"
     >
         <nb-menu [items]="menuItems" tag="left"/>
     </nb-sidebar>
