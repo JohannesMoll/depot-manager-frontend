@@ -2,8 +2,10 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { shareReplay, switchMap, map } from 'rxjs/operators';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
+import { NbToastrService } from '@nebular/theme';
 import { Picture } from '../../_models';
 import { ApiService } from '../../_services';
+import { parseHttpError } from '../../_helpers';
 
 @Component({
     selector: 'depot-picture-list',
@@ -18,7 +20,7 @@ export class PictureListComponent implements OnInit {
     @Input() public selectedPicture: string;
     @Output() public selectPicture = new EventEmitter<string>();
 
-    constructor(private api: ApiService) {}
+    constructor(private api: ApiService, private toastrService: NbToastrService) {}
 
     ngOnInit() {
         this.pictures$ = this.reload$.pipe(
@@ -38,10 +40,17 @@ export class PictureListComponent implements OnInit {
             if (droppedFile.fileEntry.isFile) {
                 const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
                 fileEntry.file((file: File) => {
-                    this.api.createPicture(file).subscribe((pictureId) => {
-                        console.log('Saved picture', pictureId);
-                        this.reload$.next();
-                    });
+                    this.api.createPicture(file).subscribe(
+                        (pictureId) => {
+                            console.log('Saved picture', pictureId);
+                            this.reload$.next();
+                            this.toastrService.success('Picture was uploaded successfully', 'Picture Uploaded');
+                        },
+                        (error) => {
+                            console.error('Failed to upload picture', error);
+                            this.toastrService.danger(parseHttpError(error), 'Upload Failed');
+                        }
+                    );
                 });
             }
         }
