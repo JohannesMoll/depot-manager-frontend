@@ -9,12 +9,31 @@
     }
 }
 
+.title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h1 {
+        margin: 0;
+        font-size: 1.25rem;
+        line-height: 1.2;
+    }
+
+    .subtitle {
+        font-size: 0.75rem;
+        opacity: 0.8;
+        margin-top: -0.125rem;
+    }
+}
+
 nb-layout-header {
     --actions-icon-color: white;
     --text-basic-color: white;
 
     img {
         height: var(--header-height);
+        padding: 0.5rem;
     }
 }
 
@@ -33,8 +52,60 @@ nb-layout-footer {
     }
 }
 
+// Sidebar footer styling
+nb-sidebar {
+    ::ng-deep .scrollable {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .sidebar-footer {
+        margin-top: auto;
+        padding: 1rem var(--sidebar-padding);
+        border-top: 1px solid var(--separator);
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+            text-decoration: none;
+            nb-icon {
+                font-size: 1.25rem;
+            }
+        }
+
+        .logout-button {
+            margin-top: 0.5rem;
+
+            nb-icon {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+}
+
 // Mobile-specific styles
 @media (max-width: 768px) {
+    .title-container {
+        h1 {
+            font-size: 1rem;
+        }
+
+        .subtitle {
+            font-size: 0.65rem;
+        }
+    }
+
+    nb-layout-header {
+        img {
+            height: calc(var(--header-height) * 0.7);
+            padding: 0.25rem;
+        }
+    }
+
     nb-sidebar {
         // Ensure sidebar overlays content on mobile
         ::ng-deep .main-container {

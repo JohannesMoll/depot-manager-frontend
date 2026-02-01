@@ -13,6 +13,7 @@ import { Subject, Observable, combineLatest } from 'rxjs';
 })
 export class PagesComponent implements OnDestroy {
     menuItems: NbMenuItem[] = [];
+    navigationItems: NbMenuItem[] = [];
 
     menuItemsUser: NbMenuItem[] = [
         {
@@ -123,6 +124,8 @@ export class PagesComponent implements OnDestroy {
                 } else {
                     this.menuItems = this.menuItemsUser;
                 }
+                // Filter out logout from navigation items
+                this.navigationItems = this.menuItems.filter(item => item.link !== '/logout');
             });
         // Check if mobile on init
         this.checkMobile();
