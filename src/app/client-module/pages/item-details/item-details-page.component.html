@@ -1,0 +1,155 @@
+<nb-card *ngIf="item$ | async as item">
+    <nb-card-header>
+        <div class="header-container">
+            <button nbButton ghost size="small" (click)="onBack()">
+                <nb-icon icon="arrow-back-outline"></nb-icon>
+                Zurück
+            </button>
+            <h3>{{ item.name }}</h3>
+            <button nbButton status="primary" size="small" (click)="onEdit(item)">
+                <nb-icon icon="edit-outline"></nb-icon>
+                Edit
+            </button>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <div class="dashboard-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Facts Card -->
+                <nb-card class="facts-card">
+                    <nb-card-header>Details</nb-card-header>
+                    <nb-card-body>
+                        <div class="facts-grid">
+                            <div class="image-wrapper" *ngIf="item.pictureId">
+                                <img [src]="getPicturePreviewUrl(item.pictureId)" alt="Item Image" class="item-image"/>
+                            </div>
+                            <div class="fact-item" *ngIf="item.externalId">
+                                <span class="key">External ID:</span>
+                                <span class="value">{{ item.externalId }}</span>
+                            </div>
+                            <div class="fact-item">
+                                <span class="key">Name:</span>
+                                <span class="value">{{ item.name }}</span>
+                            </div>
+                            <div class="fact-item" *ngIf="item.manufacturer">
+                                <span class="key">Manufacturer:</span>
+                                <span class="value">{{ item.manufacturer }}</span>
+                            </div>
+                            <div class="fact-item" *ngIf="item.model">
+                                <span class="key">Model:</span>
+                                <span class="value">{{ item.model }}</span>
+                            </div>
+                            <div class="fact-item" *ngIf="item.serialNumber">
+                                <span class="key">Serial Number:</span>
+                                <span class="value">{{ item.serialNumber }}</span>
+                            </div>
+                            <div class="fact-item">
+                                <span class="key">Description:</span>
+                                <span class="value">{{ item.description }}</span>
+                            </div>
+                            <div class="fact-item" *ngIf="item.manufactureDate">
+                                <span class="key">Manufacture Date:</span>
+                                <span class="value">{{ item.manufactureDate | formatDate }}</span>
+                            </div>
+                            <div class="fact-item" *ngIf="item.purchaseDate">
+                                <span class="key">Purchase Date:</span>
+                                <span class="value">{{ item.purchaseDate | formatDate }}</span>
+                            </div>
+                            <div class="fact-item" *ngIf="item.firstUseDate">
+                                <span class="key">First Use Date:</span>
+                                <span class="value">{{ item.firstUseDate | formatDate }}</span>
+                            </div>
+                            <div class="fact-item">
+                                <span class="key">Last Service:</span>
+                                <span class="value">{{ item.lastService | formatDate }}</span>
+                            </div>
+                            <div class="fact-item">
+                                <span class="key">Condition:</span>
+                                <span class="value">
+                                    <ng-container [ngSwitch]="item.condition">
+                                        <span *ngSwitchCase="'good'" class="status-success">Good</span>
+                                        <span *ngSwitchCase="'ok'" class="status-success">Ok</span>
+                                        <span *ngSwitchCase="'bad'" class="status-warning">Bad</span>
+                                        <span *ngSwitchCase="'gone'" class="status-danger">Unavailable</span>
+                                    </ng-container>
+                                </span>
+                            </div>
+                            <div class="fact-item" *ngIf="item.conditionComment">
+                                <span class="key">Condition Comment:</span>
+                                <span class="value">{{ item.conditionComment }}</span>
+                            </div>
+                            <div class="fact-item">
+                                <span class="key">Last Report State:</span>
+                                <span class="value">
+                                    <ng-container [ngSwitch]="item.totalReportState">
+                                        <span *ngSwitchCase="'fit'" class="status-success">
+                                            <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                                            <b>Fit</b>
+                                        </span>
+                                        <span *ngSwitchCase="'unfit'" class="status-danger">
+                                            <nb-icon icon="close-circle-outline"></nb-icon>
+                                            <b>Unfit</b>
+                                        </span>
+                                    </ng-container>
+                                </span>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+
+                <!-- Reports Card -->
+                <nb-card class="reports-card">
+                    <nb-card-header>Reports</nb-card-header>
+                    <nb-card-body class="scrollable">
+                        <depot-item-details-history
+                            [states]="itemHistoryWithState"
+                            [onlyReports]="true"
+                        ></depot-item-details-history>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Recent Reservations Card -->
+                <nb-card class="reservations-card">
+                    <nb-card-header>Recent Reservations</nb-card-header>
+                    <nb-card-body class="scrollable">
+                        <nb-list>
+                            <nb-list-item *ngFor="let reservation of reservations">
+                                <div class="reservation-container">
+                                    <div class="reservation-data">
+                                        <div>
+                                            <span class="key">{{ reservation.name }}: </span>
+                                            <span class="value">{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</span>
+                                        </div>
+                                        <div>{{ reservation.contact }}</div>
+                                    </div>
+                                    <div class="reservation-link">
+                                        <a size="small" nbButton ghost [routerLink]="['/', 'reservations', reservation.id]">View</a>
+                                    </div>
+                                </div>
+                            </nb-list-item>
+                        </nb-list>
+                        <button *ngIf="hasMorePages" nbButton ghost fullWidth size="tiny" class="chevron-button"
+                            (click)="loadNextPage(); $event.target.blur();">
+                            <nb-icon icon="chevron-down-outline" class="chevron-icon"></nb-icon>
+                        </button>
+                    </nb-card-body>
+                </nb-card>
+
+                <!-- History Card -->
+                <nb-card class="history-card">
+                    <nb-card-header>History</nb-card-header>
+                    <nb-card-body class="scrollable">
+                        <depot-item-details-history
+                            [states]="itemHistoryWithState"
+                            [noReports]="true"
+                        ></depot-item-details-history>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>

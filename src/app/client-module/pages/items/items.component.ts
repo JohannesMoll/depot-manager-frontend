@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-    NbDialogService,
     NbSortDirection,
     NbSortRequest,
     NbTreeGridDataSource,
@@ -66,7 +65,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
         public router: Router,
         private dataSourceBuilder: NbTreeGridDataSourceBuilder<ItemEntry>,
         private changeDetector: ChangeDetectorRef,
-        private dialogService: NbDialogService,
         private updateService: UpdateService
     ) {
     }
@@ -162,16 +160,10 @@ export class ItemsComponent implements OnInit, OnDestroy {
         this.router.navigate([item.id], { relativeTo: this.activatedRoute.parent });
     }
 
-    openDialog($event: MouseEvent, imageDialog: TemplateRef<any>, item: Item) {
+    onViewItemDetails($event: MouseEvent, item: Item) {
         $event.preventDefault();
         $event.stopPropagation();
-        this.dialogService.open(imageDialog, {
-            hasBackdrop: true,
-            closeOnBackdropClick: true,
-            context: item,
-            hasScroll: false,
-            autoFocus: true,
-        });
+        this.router.navigate(['details', item.id], { relativeTo: this.activatedRoute });
     }
 
     reload() {

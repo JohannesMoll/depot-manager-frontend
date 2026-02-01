@@ -125,6 +125,7 @@ import { RouterLink } from '@angular/router';
         FormatDateTimePipe,
         PictureListComponent,
         ItemDetailsComponent,
+        ItemDetailsHistoryComponent,
         ItemGroupListComponent,
         ItemGroupNamePipe,
         ReportElementPipe,

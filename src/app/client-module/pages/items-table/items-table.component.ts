@@ -102,13 +102,19 @@ export class ItemsTableComponent implements OnInit, OnDestroy {
         this.router.navigate([itemId], { relativeTo: this.activatedRoute.parent });
     }
 
-    openDialog($event: MouseEvent, imageDialog: TemplateRef<any>, item: Item) {
+    onViewItemDetails($event: MouseEvent, item: Item) {
         $event?.preventDefault();
         $event?.stopPropagation();
-        this.dialogService.open(imageDialog, {
+        this.router.navigate(['details', item.id], { relativeTo: this.activatedRoute });
+    }
+
+    openDialog($event: MouseEvent, dialog: TemplateRef<any>, data: any) {
+        $event?.preventDefault();
+        $event?.stopPropagation();
+        this.dialogService.open(dialog, {
             hasBackdrop: true,
             closeOnBackdropClick: true,
-            context: item,
+            context: data,
             hasScroll: false,
             autoFocus: true,
         });

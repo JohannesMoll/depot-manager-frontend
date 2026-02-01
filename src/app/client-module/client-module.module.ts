@@ -71,6 +71,7 @@ import { ReservationReturnComponent } from './pages/reservation-return/reservati
 import { MarkdownModule } from 'ngx-markdown';
 import { CustomReuseStrategy } from './reuse-route';
 import { ItemsTableComponent } from './pages/items-table/items-table.component';
+import { ItemDetailsPageComponent } from './pages/item-details/item-details-page.component';
 
 @NgModule({
     declarations: [
@@ -83,6 +84,7 @@ import { ItemsTableComponent } from './pages/items-table/items-table.component';
         ItemsComponent,
         ItemComponent,
         ItemsTableComponent,
+        ItemDetailsPageComponent,
         ReportElementsComponent,
         ReportElementComponent,
         ReportProfileComponent,

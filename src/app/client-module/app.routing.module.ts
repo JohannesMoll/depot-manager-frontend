@@ -5,6 +5,7 @@ import { AuthenticationComponent } from './pages/authentication/authentication.c
 import { ItemComponent } from './pages/item/item.component';
 import { ItemsTableComponent } from './pages/items-table/items-table.component';
 import { ItemsComponent } from './pages/items/items.component';
+import { ItemDetailsPageComponent } from './pages/item-details/item-details-page.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PagesComponent } from './pages/pages.component';
@@ -54,6 +55,10 @@ const routes: Routes = [
                         data: { reuseRoute: true },
                     },
                     {
+                        path: 'details/:itemId',
+                        component: ItemDetailsPageComponent,
+                    },
+                    {
                         path: ':itemId',
                         component: ItemComponent,
                     },
@@ -67,6 +72,10 @@ const routes: Routes = [
                         path: '',
                         component: ItemsTableComponent,
                         data: { reuseRoute: true },
+                    },
+                    {
+                        path: 'details/:itemId',
+                        component: ItemDetailsPageComponent,
                     },
                     {
                         path: ':itemId',
