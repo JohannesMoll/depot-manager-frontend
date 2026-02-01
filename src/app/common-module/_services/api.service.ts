@@ -248,7 +248,7 @@ export class ApiService {
 
     getReservationHistory(itemId: string, page?: number, pageSize?: number): Observable<Reservation[]> {
         let query = [];
-        
+
         if (page) {
             query.push('page=' + page);
         }
@@ -303,6 +303,10 @@ export class ApiService {
         const formData = new FormData();
         formData.append('file', data);
         return this.authRequest(this.http.post<string>(`${this.env.apiUrl}/pictures`, formData));
+    }
+
+    deletePicture(pictureId: string): Observable<void> {
+        return this.authRequest(this.http.delete<void>(`${this.env.apiUrl}/pictures/${pictureId}`));
     }
 
     getPictureUrl(pictureId: string): string {

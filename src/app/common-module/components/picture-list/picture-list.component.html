@@ -13,6 +13,16 @@
     >
         <div><img [src]="getPictureUrl(picture)" alt="Picture Preview" /></div>
         <div style="text-align: center">{{ picture.originalName }}</div>
+        <button
+            nbButton
+            status="danger"
+            size="medium"
+            ghost
+            (click)="onDelete($event, picture.id)"
+            style="position: absolute; top: 50%; right: 8px; transform: translateY(-50%);"
+        >
+            <nb-icon icon="trash-2-outline"></nb-icon>
+        </button>
     </nb-list-item>
 </nb-list>
 

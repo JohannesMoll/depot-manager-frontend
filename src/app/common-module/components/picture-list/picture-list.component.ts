@@ -51,4 +51,14 @@ export class PictureListComponent implements OnInit {
         // Needed for correct typing :-/
         openFileSelectorCallback();
     }
+
+    onDelete(event: Event, pictureId: string) {
+        event.stopPropagation();
+        if (confirm('Are you sure you want to delete this picture?')) {
+            this.api.deletePicture(pictureId).subscribe(() => {
+                console.log('Deleted picture', pictureId);
+                this.reload$.next();
+            });
+        }
+    }
 }
