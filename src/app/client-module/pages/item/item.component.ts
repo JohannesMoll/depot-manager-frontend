@@ -332,7 +332,7 @@ export class ItemComponent implements OnInit, OnDestroy {
                 this.form.reset(item);
                 this.form.markAsPristine();
                 this.form.markAsUntouched();
-                this.router.navigate(['..', item.id], {
+                this.router.navigate(['..', 'details', item.id], {
                     replaceUrl: true,
                     relativeTo: this.activatedRoute,
                 });
