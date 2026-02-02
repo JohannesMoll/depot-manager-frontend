@@ -13,6 +13,10 @@
         (change)="change.emit($event)"
         #formControlEl
     >
-        <tag-input-dropdown [autocompleteItems]="itemTags$ | async"></tag-input-dropdown>
+        <tag-input-dropdown
+            [autocompleteItems]="itemTags$ | async"
+            [showDropdownIfEmpty]="true"
+            [focusFirstElement]="true"
+        ></tag-input-dropdown>
     </tag-input>
 </div>
