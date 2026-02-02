@@ -79,6 +79,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ItemDetailsReportsComponent } from './components/item-details-reports/item-details-reports.component';
 import { ItemHistoryComponent } from './components/item-history/item-history.component';
+import { TagsInputComponent } from './components/tags-input/tags-input.component';
 import { RouterLink } from '@angular/router';
 
 @NgModule({
@@ -93,6 +94,7 @@ import { RouterLink } from '@angular/router';
         DateRangePickerComponent,
         ItemDetailsReportsComponent,
         ItemHistoryComponent,
+        TagsInputComponent,
         ItemFilterPipe,
         ItemGroupFilterPipe,
         FormatDatePipe,
@@ -121,6 +123,7 @@ import { RouterLink } from '@angular/router';
         DateRangePickerComponent,
         ReportElementListComponent,
         ConfirmDialogComponent,
+        TagsInputComponent,
         ItemFilterPipe,
         ItemGroupFilterPipe,
         FormatDatePipe,

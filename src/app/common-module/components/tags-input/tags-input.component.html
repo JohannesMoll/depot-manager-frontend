@@ -1,0 +1,18 @@
+<div class="form-control-group">
+    <label class="label" [for]="formControlEl" *ngIf="title">{{ title }}</label>
+    <tag-input
+        [separatorKeyCodes]="[188, 13]"
+        [modelAsStrings]="true"
+        [attr.aria-invalid]="formControlRef.invalid && formControlRef.touched ? true : null"
+        [formControl]="formControlRef"
+        [addOnBlur]="true"
+        [allowDupes]="false"
+        [trimTags]="true"
+        [ripple]="false"
+        [disable]="formControlRef.disabled"
+        (change)="change.emit($event)"
+        #formControlEl
+    >
+        <tag-input-dropdown [autocompleteItems]="itemTags$ | async"></tag-input-dropdown>
+    </tag-input>
+</div>

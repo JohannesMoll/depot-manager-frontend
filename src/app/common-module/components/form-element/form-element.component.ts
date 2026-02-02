@@ -41,7 +41,6 @@ export class FormElementComponent {
         | 'daterange'
         | 'radio'
         | 'select'
-        | 'tags'
         | 'reportProfile'
         | 'reportState'
         | 'reportFinalState'
@@ -68,15 +67,10 @@ export class FormElementComponent {
 
     @ViewChild('formControlEl', { read: ElementRef }) formControlElRef: ElementRef;
 
-    readonly itemTags$: Observable<string[]>;
-    readonly getItemTags: () => Observable<string[]>;
-
     private static _nextUniqueId = 0;
     readonly uniqueId: string;
 
     constructor(private dialogService: NbDialogService, private api: ApiService, private itemTags: ItemsService) {
-        this.itemTags$ = itemTags.itemTags$;
-        this.getItemTags = () => itemTags.itemTags$;
         this.uniqueId = `_${FormElementComponent._nextUniqueId}`;
         FormElementComponent._nextUniqueId++;
     }
