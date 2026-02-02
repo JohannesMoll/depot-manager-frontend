@@ -22,81 +22,102 @@
             <div class="left-column">
                 <!-- Facts Card -->
                 <nb-card class="facts-card">
-                    <nb-card-header>Details</nb-card-header>
+                    <nb-card-header>Details {{ item.name }}</nb-card-header>
                     <nb-card-body>
                         <div class="facts-grid">
-                            <div class="image-wrapper" *ngIf="item.pictureId">
-                                <img [src]="getPicturePreviewUrl(item.pictureId)" alt="Item Image" class="item-image"/>
+                            <!-- Column 1 -->
+                            <div class="facts-column">
+                                <div class="image-wrapper" *ngIf="item.pictureId">
+                                    <img
+                                        [src]="getPicturePreviewUrl(item.pictureId)"
+                                        alt="Item Image"
+                                        class="item-image"
+                                    />
+                                </div>
+                                <div class="fact-item" *ngIf="item.externalId">
+                                    <span class="key">External ID:</span>
+                                    <span class="value">{{ item.externalId }}</span>
+                                </div>
+                                <!-- <div class="fact-item">
+                                    <span class="key">Name:</span>
+                                    <span class="value">{{ item.name }}</span>
+                                </div>  -->
+                                <div class="fact-item" *ngIf="item.manufacturer">
+                                    <span class="key">Manufacturer:</span>
+                                    <span class="value">{{ item.manufacturer }}</span>
+                                </div>
+                                <div class="fact-item" *ngIf="item.model">
+                                    <span class="key">Model:</span>
+                                    <span class="value">{{ item.model }}</span>
+                                </div>
+                                <div class="fact-item" *ngIf="item.serialNumber">
+                                    <span class="key">Serial Number:</span>
+                                    <span class="value">{{ item.serialNumber }}</span>
+                                </div>
                             </div>
-                            <div class="fact-item" *ngIf="item.externalId">
-                                <span class="key">External ID:</span>
-                                <span class="value">{{ item.externalId }}</span>
+
+                            <!-- Column 2 -->
+                            <div class="facts-column">
+                                <div class="fact-item">
+                                    <span class="key">Description:</span>
+                                    <span class="value">{{ item.description }}</span>
+                                </div>
+                                <div class="fact-item" *ngIf="item.manufactureDate">
+                                    <span class="key">Manufacture Date:</span>
+                                    <span class="value">{{ item.manufactureDate | formatDate }}</span>
+                                </div>
+                                <div class="fact-item" *ngIf="item.purchaseDate">
+                                    <span class="key">Purchase Date:</span>
+                                    <span class="value">{{ item.purchaseDate | formatDate }}</span>
+                                </div>
+                                <div class="fact-item" *ngIf="item.firstUseDate">
+                                    <span class="key">First Use Date:</span>
+                                    <span class="value">{{ item.firstUseDate | formatDate }}</span>
+                                </div>
+                                <div class="fact-item">
+                                    <span class="key">Last Service:</span>
+                                    <span class="value">{{ item.lastService | formatDate }}</span>
+                                </div>
                             </div>
-                            <div class="fact-item">
-                                <span class="key">Name:</span>
-                                <span class="value">{{ item.name }}</span>
-                            </div>
-                            <div class="fact-item" *ngIf="item.manufacturer">
-                                <span class="key">Manufacturer:</span>
-                                <span class="value">{{ item.manufacturer }}</span>
-                            </div>
-                            <div class="fact-item" *ngIf="item.model">
-                                <span class="key">Model:</span>
-                                <span class="value">{{ item.model }}</span>
-                            </div>
-                            <div class="fact-item" *ngIf="item.serialNumber">
-                                <span class="key">Serial Number:</span>
-                                <span class="value">{{ item.serialNumber }}</span>
-                            </div>
-                            <div class="fact-item">
-                                <span class="key">Description:</span>
-                                <span class="value">{{ item.description }}</span>
-                            </div>
-                            <div class="fact-item" *ngIf="item.manufactureDate">
-                                <span class="key">Manufacture Date:</span>
-                                <span class="value">{{ item.manufactureDate | formatDate }}</span>
-                            </div>
-                            <div class="fact-item" *ngIf="item.purchaseDate">
-                                <span class="key">Purchase Date:</span>
-                                <span class="value">{{ item.purchaseDate | formatDate }}</span>
-                            </div>
-                            <div class="fact-item" *ngIf="item.firstUseDate">
-                                <span class="key">First Use Date:</span>
-                                <span class="value">{{ item.firstUseDate | formatDate }}</span>
-                            </div>
-                            <div class="fact-item">
-                                <span class="key">Last Service:</span>
-                                <span class="value">{{ item.lastService | formatDate }}</span>
-                            </div>
-                            <div class="fact-item">
-                                <span class="key">Condition:</span>
-                                <span class="value">
-                                    <ng-container [ngSwitch]="item.condition">
-                                        <span *ngSwitchCase="'good'" class="status-success">Good</span>
-                                        <span *ngSwitchCase="'ok'" class="status-success">Ok</span>
-                                        <span *ngSwitchCase="'bad'" class="status-warning">Bad</span>
-                                        <span *ngSwitchCase="'gone'" class="status-danger">Unavailable</span>
-                                    </ng-container>
-                                </span>
-                            </div>
-                            <div class="fact-item" *ngIf="item.conditionComment">
-                                <span class="key">Condition Comment:</span>
-                                <span class="value">{{ item.conditionComment }}</span>
-                            </div>
-                            <div class="fact-item">
-                                <span class="key">Last Report State:</span>
-                                <span class="value">
-                                    <ng-container [ngSwitch]="item.totalReportState">
-                                        <span *ngSwitchCase="'fit'" class="status-success">
-                                            <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                                            <b>Fit</b>
-                                        </span>
-                                        <span *ngSwitchCase="'unfit'" class="status-danger">
-                                            <nb-icon icon="close-circle-outline"></nb-icon>
-                                            <b>Unfit</b>
-                                        </span>
-                                    </ng-container>
-                                </span>
+
+                            <!-- Column 3 -->
+                            <div class="facts-column">
+                                <div class="fact-item">
+                                    <span class="key">Condition:</span>
+                                    <span class="value">
+                                        <ng-container [ngSwitch]="item.condition">
+                                            <span *ngSwitchCase="'good'" class="status-success">Good</span>
+                                            <span *ngSwitchCase="'ok'" class="status-success">Ok</span>
+                                            <span *ngSwitchCase="'bad'" class="status-warning">Bad</span>
+                                            <span *ngSwitchCase="'gone'" class="status-danger">Unavailable</span>
+                                        </ng-container>
+                                    </span>
+                                </div>
+                                <div class="fact-item" *ngIf="item.conditionComment">
+                                    <span class="key">Condition Comment:</span>
+                                    <span class="value">{{ item.conditionComment }}</span>
+                                </div>
+                                <div class="fact-item">
+                                    <span class="key">Last Report State:</span>
+                                    <span class="value">
+                                        <ng-container [ngSwitch]="item.totalReportState">
+                                            <span *ngSwitchCase="'fit'" class="status-success">
+                                                <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                                                <b>Fit</b>
+                                            </span>
+                                            <span *ngSwitchCase="'unfit'" class="status-danger">
+                                                <nb-icon icon="close-circle-outline"></nb-icon>
+                                                <b>Unfit</b>
+                                            </span>
+                                        </ng-container>
+                                    </span>
+                                </div>
+                                <div class="fact-item" *ngIf="item.tags && item.tags.length > 0">
+                                    <span class="key">Tags:</span>
+                                    <span class="value"
+                                        ><span class="tag" *ngFor="let tag of item.tags">{{ tag }}</span></span
+                                    >
+                                </div>
                             </div>
                         </div>
                     </nb-card-body>
@@ -132,18 +153,34 @@
                                     <div class="reservation-data">
                                         <div>
                                             <span class="key">{{ reservation.name }}: </span>
-                                            <span class="value">{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</span>
+                                            <span class="value"
+                                                >{{ reservation.start | formatDate }} -
+                                                {{ reservation.end | formatDate }}</span
+                                            >
                                         </div>
                                         <div>{{ reservation.contact }}</div>
                                     </div>
                                     <div class="reservation-link">
-                                        <a size="small" nbButton ghost [routerLink]="['/', 'reservations', reservation.id]">View</a>
+                                        <a
+                                            size="small"
+                                            nbButton
+                                            ghost
+                                            [routerLink]="['/', 'reservations', reservation.id]"
+                                            >View</a
+                                        >
                                     </div>
                                 </div>
                             </nb-list-item>
                         </nb-list>
-                        <button *ngIf="hasMorePages" nbButton ghost fullWidth size="tiny" class="chevron-button"
-                            (click)="loadNextPage(); $event.target.blur();">
+                        <button
+                            *ngIf="hasMorePages"
+                            nbButton
+                            ghost
+                            fullWidth
+                            size="tiny"
+                            class="chevron-button"
+                            (click)="loadNextPage(); $event.target.blur()"
+                        >
                             <nb-icon icon="chevron-down-outline" class="chevron-icon"></nb-icon>
                         </button>
                     </nb-card-body>
@@ -153,9 +190,7 @@
                 <nb-card class="history-card">
                     <nb-card-header>History</nb-card-header>
                     <nb-card-body class="scrollable">
-                        <depot-item-history
-                            [states]="itemHistoryWithState"
-                        ></depot-item-history>
+                        <depot-item-history [states]="itemHistoryWithState"></depot-item-history>
                     </nb-card-body>
                 </nb-card>
             </div>
@@ -225,7 +260,15 @@
         </nb-card-body>
         <nb-card-footer>
             <button nbButton type="button" (click)="ref.close()">Abbrechen</button>
-            <button nbButton status="primary" type="button" [disabled]="loading || !reportFormGroup.valid" (click)="onSubmitReport(ref)">Speichern</button>
+            <button
+                nbButton
+                status="primary"
+                type="button"
+                [disabled]="loading || !reportFormGroup.valid"
+                (click)="onSubmitReport(ref)"
+            >
+                Speichern
+            </button>
         </nb-card-footer>
     </nb-card>
 </ng-template>
